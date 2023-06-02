@@ -1,5 +1,5 @@
 'use client'
-import { ChatBubbleOvalLeftEllipsisIcon, PhotoIcon, SpeakerWaveIcon } from "@heroicons/react/24/solid";
+import { PhotoIcon, SpeakerWaveIcon } from "@heroicons/react/24/solid";
 import { Tooltip } from "react-tooltip";
 import Link from "next/link";
 import SquigglyLines from "../components/SquigglyLines";
@@ -26,20 +26,6 @@ return (
                         <SquigglyLines />
                         <span className="relative">Image</span>
                     </span>
-                </div>
-            </Link>
-            <Link
-                href={`/chat/${authContext?.currentUser?.uid}`}
-                className="md:hover:scale-105 transition duration-700 hover:shadow-amber-500/80 bg-[url('/iguanashirt.svg')] bg-[#a1e449] bg-no-repeat bg-right bg-contain border 
-                border-t border-transparent rounded-3xl flex p-3 m-2 md:m-5 justify-center items-center hover:shadow-lg"
-            >
-                <div className="mx-auto max-w-4xl text-center items-center flex text-3xl font-display font-serif md:text-5xl font-bold tracking-normal text-white ">
-                    <ChatBubbleOvalLeftEllipsisIcon className='inline-block h-11 w-11 m-2 text-white hover:text-[#11A37F]'/>
-                    <span className="relative whitespace-nowrap text-[#3290EE]">
-                        <SquigglyLines />
-                        <span className="relative">Chatty</span>
-                    </span>{" "}
-                    <span className="font-mono text-5xl ml-2">AI</span>{" "}
                 </div>
             </Link>
             <Link 
