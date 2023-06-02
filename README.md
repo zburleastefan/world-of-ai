@@ -1,6 +1,6 @@
 # World of AI
 
-![Screenshot_459](https://github.com/zburleastefan/world-of-ai/assets/104846691/519ed8ec-e5a7-45c1-b6a6-7763dce74d9f)
+![worldOfAi0Img](https://github.com/zburleastefan/world-of-ai/assets/104846691/14090566-3383-4c4f-bd51-cd63b7687a6d)
 
 ## Description
 
@@ -16,15 +16,18 @@ With World of AI app you can:
 
 ## Generate AI images
 
-![Screenshot_460](https://github.com/zburleastefan/world-of-ai/assets/104846691/260ab9ab-0e9d-49f7-8537-50ac413eae82)
+![worldOfAi1Img](https://github.com/zburleastefan/world-of-ai/assets/104846691/45266a91-bd28-4325-9c42-9b173f0e391d)
+
 
 ## Generate AI audio
 
-![Screenshot_462](https://github.com/zburleastefan/world-of-ai/assets/104846691/60c0976f-06ac-4796-a58d-d3268e893a04)
+![worldOfAi2Img](https://github.com/zburleastefan/world-of-ai/assets/104846691/f23d7f14-424a-4c60-9e4b-538337320d2b)
+
 
 ## Chat with chatty AI
 
-![Screenshot_463](https://github.com/zburleastefan/world-of-ai/assets/104846691/d619dad3-e026-4c90-b7d4-47aaad9dd204)
+![worldOfAi3Img](https://github.com/zburleastefan/world-of-ai/assets/104846691/d02a6091-b9a7-4911-acfb-ef2d710c7a66)
+
 
 ## How to use
 
