@@ -27,7 +27,7 @@ function SignUp({}: Props) {
         
   return (
     <div 
-      className="relative bg-[#476ec2] bg-no-repeat bg-center bg-cover place-items-center bg-[url('/aiImg.svg')] object-scale-down 
+      className="relative bg-[#476ec2] bg-no-repeat bg-center bg-cover place-items-center bg-[url('/abstract-technology-ai-computing.svg')]  object-scale-down 
       h-screen w-screen flex flex-col items-center justify-center text-center overflow-hidden"
     >      
       <section className='grid w-screen h-screen justify-center md:mt-10 items-center align-middle overflow-y-auto overflow-x-hidden'>
@@ -124,10 +124,10 @@ function SignUp({}: Props) {
         <div className='flex-row flex'>
           <a 
             className='text-gray-600' 
-            href="https://openai.com/"  
+            href="https://rapidapi.com/"  
             target="_blank"  
           >
-            <p className='text-gray-500 p-1 font-bold'>OpenAI</p>
+            <p className='text-gray-500 p-1 font-bold'>RapidAPI</p>
           </a>
           <a 
             className='text-gray-600' 

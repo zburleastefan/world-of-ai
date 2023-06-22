@@ -1,10 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { adminDb } from '../../firebase/adminConfig';
 import admin from 'firebase-admin';
-
-type Data = {
-    answer: string
-}
   
 export default async function handler(
     req: NextApiRequest,
@@ -34,8 +30,6 @@ export default async function handler(
     .doc(auth?.currentUser?.uid!)
     .collection("imageList")
     .add(urlList);
-    
-    // console.log('dbResponse: ' + dbResponse.path);
 
     res.status(200).json({ answer: "Success!" })
 }

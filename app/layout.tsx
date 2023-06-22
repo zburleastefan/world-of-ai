@@ -15,9 +15,7 @@ export default function RootLayout({
       <body>
         <AuthContextProvider>
           <div className='flex flex-col overflow-hidden h-screen max-h-screen'>
-
             {children}
-
             <Notification/>
           </div>
         </AuthContextProvider>

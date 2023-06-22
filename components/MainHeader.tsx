@@ -7,9 +7,7 @@ import userImage from '../public/defaultUser.svg';
 import { auth } from '../firebase/firebaseConfig';
 import { signOut } from 'firebase/auth';
 
-type Props = {}
-
-function MainHeader({}: Props) {
+function MainHeader() {
   return (
     <header className="flex flex-row  bg-black place-items-center sticky py-5 z-10 top-0 p-1 items-center justify-around">
         <button onClick={() => signOut(auth)} data-tooltip-id="tooltip" data-tooltip-content="Sign out"  data-tooltip-place='bottom' className='tooltip text-white'>
@@ -35,4 +33,4 @@ function MainHeader({}: Props) {
   )
 }
 
-export default MainHeader
+export default MainHeader;

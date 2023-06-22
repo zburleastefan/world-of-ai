@@ -1,24 +1,25 @@
 import { User, onAuthStateChanged } from 'firebase/auth';
-import React from 'react';
 import SignIn from '../app/signin/page';
 import SignUp from '../app/signup/page';
 import { usePathname } from 'next/navigation';
 import ForgotPassword from '../app/forgotpassword/page';
 import { auth } from '../firebase/firebaseConfig';
+import { createContext, useContext, useEffect, useState } from 'react';
 import LoadingDots from '../components/LoadingDots';
 
-export const AuthContext = React.createContext({});
-export const useAuthContext = () =>  React.useContext(AuthContext);
+export const AuthContext = createContext({});
+export const useAuthContext = () => useContext(AuthContext);
+
 export const AuthContextProvider = ({
     children,
 }:{
     children: React.ReactNode
 }) => {
-    const [user, setUser] = React.useState<User | null>(null);
-    const [loading, setLoading] = React.useState<Boolean>(true);
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState<Boolean>(true);
     const pathName = usePathname();
 
-    React.useEffect(() => {
+    useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
@@ -33,23 +34,30 @@ export const AuthContextProvider = ({
     return (
     <AuthContext.Provider value={{auth}}>
         { loading ? 
-            <div 
-                className="relative bg-[#476ec2] bg-no-repeat bg-center bg-cover place-items-center bg-[url('/aiImg.svg')] object-scale-down 
-                h-screen w-screen flex flex-col items-center justify-center text-center overflow-hidden"
-            > 
-                <h1 className="text-3xl font-display font-serif md:text-5xl font-bold tracking-normal text-[#11A37F] ">
-                    Loading{" "}
-                    <span className="relative text-3xl"><LoadingDots /></span>
-                </h1>
-            </div>
+            <>
+                <div
+                    className="relative bg-[#476ec2] bg-no-repeat bg-center bg-cover place-items-center bg-[url('/abstract-technology-ai-computing.svg')] object-scale-down 
+                    h-screen w-screen flex flex-col items-center justify-center text-center overflow-hidden"
+                > 
+                    <LoadingDots />
+                </div>
+            </>
         : user && user.emailVerified == true ? 
-            children
+            <>
+                {children}
+            </>
         : pathName?.includes('forgotpassword') ?
-            <ForgotPassword />
+            <>
+                <ForgotPassword />
+            </>
         : pathName?.includes('signup') ?
-            <SignUp/>
+            <>
+                <SignUp/>
+            </>
         :
-            <SignIn/>
+            <>
+                <SignIn/>
+            </>
         }
     </AuthContext.Provider>
   );

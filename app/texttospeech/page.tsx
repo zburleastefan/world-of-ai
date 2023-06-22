@@ -1,8 +1,6 @@
-import GenerateSpeechFromText from '../../components/GenerateSpeechFromText'
+import GenerateSpeechFromText from '../../components/GenerateSpeechFromText';
 
-type Props = {}
-
-function TextToSpeech({}: Props) {
+function TextToSpeech() {
   return (
     <div className="flex flex-col w-screen bg-black h-screen object-scale-down bg-center bg-cover place-items-center">
         <GenerateSpeechFromText />
@@ -10,4 +8,4 @@ function TextToSpeech({}: Props) {
   )
 }
 
-export default TextToSpeech
+export default TextToSpeech;

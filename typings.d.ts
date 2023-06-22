@@ -19,7 +19,7 @@ interface UrlList {
         avatar: string;
     },
 }
-// imagesList: [{
-//     description: string,
-//     urls: string[],
-// }],
+
+interface  Data {
+    answer: string
+}
