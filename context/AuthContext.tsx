@@ -34,30 +34,22 @@ export const AuthContextProvider = ({
     return (
     <AuthContext.Provider value={{auth}}>
         { loading ? 
-            <>
-                <div
-                    className="relative bg-[#476ec2] bg-no-repeat bg-center bg-cover place-items-center bg-[url('/abstract-technology-ai-computing.svg')] object-scale-down 
-                    h-screen w-screen flex flex-col items-center justify-center text-center overflow-hidden"
-                > 
-                    <LoadingDots />
-                </div>
-            </>
-        : user && user.emailVerified == true ? 
-            <>
-                {children}
-            </>
+            <div
+                className="relative bg-[#476ec2] bg-no-repeat bg-center bg-cover place-items-center bg-[url('/abstract-technology-ai-computing.svg')] object-scale-down 
+                h-screen w-screen flex flex-col items-center justify-center text-center overflow-hidden"
+            > 
+                <LoadingDots />
+            </div>
+        : user && user.uid != null ? 
+            
+            children
+            
         : pathName?.includes('forgotpassword') ?
-            <>
-                <ForgotPassword />
-            </>
+            <ForgotPassword />
         : pathName?.includes('signup') ?
-            <>
-                <SignUp/>
-            </>
+            <SignUp/>
         :
-            <>
-                <SignIn/>
-            </>
+            <SignIn/>
         }
     </AuthContext.Provider>
   );
