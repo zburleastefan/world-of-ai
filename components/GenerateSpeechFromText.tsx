@@ -19,8 +19,19 @@ function GenerateSpeechFromText() {
         orderBy("createdAt","desc"),
     ));  
 
+    function speak(text: string) {
+        // if(window['speechSynthesis'] === undefined) {
+        //     toast.error('speechSynthesis is undefined');
+        //     return;
+        // }
+        var synth = window.speechSynthesis;
+        var utterThis = new SpeechSynthesisUtterance(text);
+        synth.speak(utterThis);
+    }
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         if (!prompt) return;
         const notification = toast.loading('AI is thinking...');
 
@@ -34,8 +45,11 @@ function GenerateSpeechFromText() {
             setPrompt("");
             return;
         }
+
         speak(userInput);
-        setPrompt("");   
+        setPrompt(""); 
+        toast.success('Sending message to database.', { 
+            id: notification,})  
         
         await fetch("/api/sendTextToDb", {
             method: "POST",
@@ -47,26 +61,14 @@ function GenerateSpeechFromText() {
                 auth,
             }),     
         }).then(async (response) => {
-            toast.loading('Clearing thoughts...', { 
-                id: notification,})
             toast.success('Success!', { 
                 id: notification,})
-            setPrompt("");  
             setPlaceholder("Generate AI audio from text..."); 
         }).catch((error) => {
             toast.error(error);
         })
     };
 
-    function speak(text: string) {
-        if(window['speechSynthesis'] === undefined) {
-            toast.error('speechSynthesis is undefined');
-            return;
-        }
-        var synth = window.speechSynthesis;
-        var utterThis = new SpeechSynthesisUtterance(text);
-        synth.speak(utterThis);
-    }
 
 return (
         <>
