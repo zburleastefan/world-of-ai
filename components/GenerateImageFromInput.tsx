@@ -42,26 +42,26 @@ const GenerateImageFromInput: NextPage= () => {
         const notification = toast.loading('AI image generator is thinking...');
 
         let userInput = prompt.trim();
-        setPrompt('');
         while (userInput[0] == ' ') {
             userInput = userInput.trim();
         }
         userInput = userInput.replace(/\?/g,'');
         userInput = userInput.replace(/\!/g,'');
-
+        
         if (!userInput || userInput ==' ') {
             toast.error("You entered only white spaces. Please type in a valid message!");
             setPrompt("");
             return;
         }
+        setPrompt('');
         let urlObjList: { description: string; urls: string[]; }[] = [];
 
         await rapidApiAiImgGenerator(userInput).then(async (response) => {
-            console.log(JSON.stringify(response.results.variaties));
+            // console.log(JSON.stringify(response.results.variaties));
             for (let i = 0; i < response.results.variaties.length ; ++ i) {
                 urlObjList.push({'description': response.results.variaties[i].description, 'urls': response.results.variaties[i].urls});
             }
-        })
+        }).catch((error) => toast.error(error.message));
 
         await fetch("/api/sendImgToDb", {
             method: "POST",
