@@ -8,25 +8,23 @@ import Link from 'next/link';
 import { collection, orderBy, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
+import { rapidApiGenerateSpeech } from '../utils/rapidApiGenerateSpeech';
+
 
 function GenerateSpeechFromText() {
     const [prompt, setPrompt] = useState("");
     const [textListCounter, setTextListCounter] = useState(false);
-    const [placeholdermsg, setPlaceholder] = useState("Generate AI audio from text...");
-
+    const placeholdermsg = "Generate AI audio from text...";
+    
     const [messages] = useCollection(auth && query(
         collection(db, "users", auth?.currentUser?.email!, "Text", auth?.currentUser?.uid!, 'textList'),
         orderBy("createdAt","desc"),
-    ));  
-
-    function speak(text: string) {
-        if(window['speechSynthesis'] === undefined) {
-            toast.error('SpeechSynthesis is undefined. Please try on another browser.');
-            return;
-        }
-        var synth = window.speechSynthesis;
-        var utterThis = new SpeechSynthesisUtterance(text);
-        synth.speak(utterThis);
+        ));  
+        
+    const startAudio = (mp3: any) => {
+        let audio = new Audio(mp3);
+        // audio.load();
+        audio.play()
     }
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -45,8 +43,32 @@ function GenerateSpeechFromText() {
             setPrompt("");
             return;
         }
+
+        var mp3File = await rapidApiGenerateSpeech(userInput).then((response) => {
+            // console.log(JSON.stringify(response));
+
+             // response.value for fetch streams is a Uint8Array
+            // var blob = new Blob([response], { type: 'audio/mp3' });
+            // var url = window.URL.createObjectURL(blob);
+            // let audio = new Audio(url);
+            // audio.load();
+            // audio.play()
+
+            // window.audio = new Audio();
+            // window.audio.src = url;
+            // window.audio.play();
+            
+
+            var reader = response.body.getReader();
+            return reader
+            .read()
+            .then((result: any) => {
+                startAudio(result);
+              return result;
+            });
+        }).catch((error) => toast.error(error.message));
         
-        speak(userInput);
+        // speak(userInput);
         setPrompt(""); 
         toast.success('Sending message to database.', { 
             id: notification,})  
@@ -63,12 +85,10 @@ function GenerateSpeechFromText() {
         }).then(async (response) => {
             toast.success('Success!', { 
                 id: notification,})
-            setPlaceholder("Generate AI audio from text..."); 
         }).catch((error) => {
             toast.error(error);
         })
     };
-
 
 return (
         <>

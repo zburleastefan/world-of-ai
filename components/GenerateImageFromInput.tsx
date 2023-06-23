@@ -92,9 +92,9 @@ const GenerateImageFromInput: NextPage= () => {
                     </Link>
                     <div className="text-3xl font-display font-serif md:text-5xl font-bold tracking-normal text-slate-400/90 ">
                         <span className="font-mono text-5xl">AI</span>{" "}
-                        <span className="relative whitespace-nowrap text-[#3290EE]">
+                        <span className="relative whitespace-nowrap text-[#59eb3b]">
                             <SquigglyLines />
-                            <span className="relative">Image</span>
+                            <span className="relative">Art</span>
                         </span>
                         {" "}Generator
                     </div>
@@ -106,13 +106,13 @@ const GenerateImageFromInput: NextPage= () => {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        powered by <span className='text-white/90 font-serif text-base'>RapidAPI Image Generator</span>
+                        powered by <span className='text-white/90 font-serif text-base'>RapidAPI AI Image Generator</span>
                     </a>
                 </div>
                 <Tooltip anchorSelect=".tooltip" id='tooltip' className='text-black font-sans text-xs rounded-full justify-center p-1 text-center bg-white/30 absolute'/>
             </header>
 
-            <div className="overflow-y-auto overflow-x-hidden bg-no-repeat bg-center bg-cover bg-[url('/aiDrawsImage.svg')] bg-neutral-400/80 w-screen h-full">
+            <div className="overflow-y-auto overflow-x-hidden bg-no-repeat bg-center bg-cover bg-[url('/aiDrawsImage.svg')] bg-[#59eb3b]/30 w-screen h-full">
                 <div className="overflow-y-auto overflow-x-hidden">
                     <div className="px-1 md:px-10 overflow-y-auto overflow-x-hidden flex flex-col">
                         <form id="form" onSubmit={handleSubmit} className="p-1 flex shadow-md shadow-red-800/80 rounded-full">
@@ -140,7 +140,7 @@ const GenerateImageFromInput: NextPage= () => {
                                 <div className="overflow-y-auto overflow-x-hidden">
                                     {imageUrls?.empty && (
                                         <div>
-                                            <div className="text-black text-center mt-10 ">
+                                            <div className="text-yellow-500 text-center mt-10 ">
                                                 <div className="flex mx-auto justify-center mt-6 animate-bounce">
                                                     <p className="my-auto">Database is empty!.</p>
                                                 </div>
