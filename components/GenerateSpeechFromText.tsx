@@ -19,16 +19,6 @@ function GenerateSpeechFromText() {
         orderBy("createdAt","desc"),
     ));  
 
-    function speak(text: string) {
-        // if(window['speechSynthesis'] === undefined) {
-        //     toast.error('speechSynthesis is undefined');
-        //     return;
-        // }
-        var synth = window.speechSynthesis;
-        var utterThis = new SpeechSynthesisUtterance(text);
-        synth.speak(utterThis);
-    }
-
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -46,7 +36,16 @@ function GenerateSpeechFromText() {
             return;
         }
 
-        speak(userInput);
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.speak(
+              new SpeechSynthesisUtterance(userInput)
+            )
+        } else {
+            toast.success('SpeechSynthesis undefined...', { 
+                id: notification,});
+            return;  
+        }
+
         setPrompt(""); 
         toast.success('Sending message to database.', { 
             id: notification,})  
@@ -101,7 +100,7 @@ return (
                 <Tooltip anchorSelect=".tooltip" id='tooltip' className='text-white font-sans text-xs rounded-full justify-center p-1 text-center bg-white/30 absolute'/>
             </header>
             
-            <div className="overflow-y-auto overflow-x-hidden bg-no-repeat bg-center bg-cover bg-[url('/ai-voice.svg')] w-screen h-full">
+            <div className="overflow-y-auto overflow-x-hidden bg-center bg-contain bg-[url('/aiSpeakingGirl.svg')] bg-neutral-400 w-screen h-full">
                 <div className="px-1 md:px-10 overflow-y-auto overflow-x-hidden w-screen flex flex-col">
                     <form id="form" onSubmit={handleSubmit} className="p-1 flex shadow-md shadow-red-800/80 rounded-full">
                         <input 
@@ -110,7 +109,7 @@ return (
                             value={prompt}
                             onChange={(e) => setPrompt(e.target.value)}
                             placeholder={placeholdermsg} 
-                            className="flex-1 rounded-xl p-0 md:p-2 bg-transparent md:w-96 text-black font-bold border placeholder:text-black placeholder:font-bold"
+                            className="flex-1 rounded-xl p-0 md:p-2 bg-transparent md:w-96 text-yellow-500 font-bold border placeholder:text-yellow-500 placeholder:font-bold"
                         />
                         <button 
                             id="generate"
@@ -131,7 +130,7 @@ return (
                     <div className={`px-5 overflow-y-auto overflow-x-hidden ${textListCounter ? 'visible' : 'invisible'}`}>
                         {messages?.empty && (
                             <div>
-                                <div className="text-white text-center mt-2 ">
+                                <div className="text-yellow-500 text-center mt-2 ">
                                     <div className="flex mx-auto justify-center mt-2 animate-bounce ">
                                         <p className="my-auto">No text in database.</p>
                                     </div>
@@ -143,7 +142,7 @@ return (
                             <div className="justify-center m-2">
                                 {messages?.docs.map((message) => (
                                     <li key={message.id} className={`flex  p-1 justify-center items-center`}>
-                                        <button onClick={() => setPrompt(message.data().text)} className="text-white border rounded-2xl px-1 text-center md:hover:scale-105 xl:scale-95 transition duration-700 border-t hover:shadow-md hover:shadow-amber-500/80">
+                                        <button onClick={() => setPrompt(message.data().text)} className="text-yellow-500 border rounded-2xl px-1 text-center md:hover:scale-105 xl:scale-95 transition duration-700 border-t hover:shadow-md hover:shadow-amber-500/80">
                                             {message.data().text}
                                         </button>
                                     </li>

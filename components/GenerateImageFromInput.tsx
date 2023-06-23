@@ -112,7 +112,7 @@ const GenerateImageFromInput: NextPage= () => {
                 <Tooltip anchorSelect=".tooltip" id='tooltip' className='text-black font-sans text-xs rounded-full justify-center p-1 text-center bg-white/30 absolute'/>
             </header>
 
-            <div className="overflow-y-auto overflow-x-hidden bg-no-repeat bg-center bg-cover bg-[url('/ai_painting_hero.svg')] w-screen h-full">
+            <div className="overflow-y-auto overflow-x-hidden bg-no-repeat bg-center bg-cover bg-[url('/aiDrawsImage.svg')] bg-neutral-400/80 w-screen h-full">
                 <div className="overflow-y-auto overflow-x-hidden">
                     <div className="px-1 md:px-10 overflow-y-auto overflow-x-hidden flex flex-col">
                         <form id="form" onSubmit={handleSubmit} className="p-1 flex shadow-md shadow-red-800/80 rounded-full">
@@ -122,7 +122,7 @@ const GenerateImageFromInput: NextPage= () => {
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
                                 placeholder={placeholdermsg} 
-                                className="flex-1 rounded-xl p-0 md:p-2 bg-transparent md:w-96 text-black font-bold border placeholder:text-black placeholder:font-bold"
+                                className="flex-1 rounded-xl p-0 md:p-2 bg-transparent md:w-96 text-yellow-500 font-bold border placeholder:text-yellow-500 placeholder:font-bold"
                             />
                             <button 
                                 id="generate"
@@ -152,7 +152,7 @@ const GenerateImageFromInput: NextPage= () => {
                                         <div className="items-center flex flex-col overflow-y-auto overflow-x-hidden font-semibold">
                                             { imageUrls?.docs.map((item) => (
                                                 <ul id={item.id}  key={item.id} className="flex flex-col items-center overflow-hidden" >
-                                                    <a href={`#${item.id}`} id={`btn&${item.id}`} className="text-black cursor-pointer border rounded-xl font-bold my-1 p-1 px-2 hover:scale-95 duration-700 ease-in-out transition hover:text-red-500 hover:shadow-red-500 hover:shadow-inner" onClick={() => {hideContent(item.id, item.data().prompt)}}>
+                                                    <a href={`#${item.id}`} id={`btn&${item.id}`} className="text-yellow-500 cursor-pointer border rounded-xl font-bold my-1 p-1 px-2 hover:scale-95 duration-700 ease-in-out transition hover:text-red-500 hover:shadow-red-500 hover:shadow-inner" onClick={() => {hideContent(item.id, item.data().prompt)}}>
                                                     Show images of : &apos;{item.data().prompt}&apos;
                                                     </a>
                                                     <div id={`box&${item.id}`} style={{display:"none"}} className={`flex flex-col items-center`}>
@@ -160,7 +160,7 @@ const GenerateImageFromInput: NextPage= () => {
                                                             <PhotoIcon className="inline-block mr-1 w-7 h-7"/> Page {(imgNr + 1) + ' / 4'}
                                                         </button>
                                                         
-                                                        <div className="tracking-tight grid grid-cols-1 md:grid-cols-3 text-black justify-center overflow-hidden">
+                                                        <div className="tracking-tight grid grid-cols-1 md:grid-cols-3 text-yellow-500 justify-center overflow-hidden">
                                                             {item.data().urlObjList.map((elem: any, index: number) => (
                                                                     <li key={index} className={`flex p-2 md:px-6 justify-center`}>
                                                                         <figure className={`relative flex flex-col items-center justify-start text-center hover:scale-95 transition duration-1000 ease-in-out rounded-2xl p-6 shadow-xl shadow-slate-900/10 border `}>
@@ -171,7 +171,7 @@ const GenerateImageFromInput: NextPage= () => {
                                                                             </blockquote>
                                                         
                                                                             <figcaption className="relative mt-3 border-slate-100/50 pt-4 space-y-1 hover:scale-110 ease-in-out duration-700">
-                                                                                <Link href={elem.urls[imgNr] ? elem.urls[imgNr] : elem.urls[0]} target="_blank" className={`p-1 justify-center items-center text-black `}>
+                                                                                <Link href={elem.urls[imgNr] ? elem.urls[imgNr] : elem.urls[0]} target="_blank" className={`p-1 justify-center items-center text-yellow-500 `}>
                                                                                     <Image 
                                                                                         src={elem.urls[imgNr]}
                                                                                         alt='photo' 

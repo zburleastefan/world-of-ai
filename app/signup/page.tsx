@@ -27,7 +27,7 @@ function SignUp({}: Props) {
         
   return (
     <div 
-      className="relative bg-[#476ec2] bg-no-repeat bg-center bg-cover place-items-center bg-[url('/abstract-technology-ai-computing.svg')]  object-scale-down 
+      className="relative bg-[#476ec2] bg-no-repeat bg-center bg-cover place-items-center bg-[url('/homeVariant.svg')]  object-scale-down 
       h-screen w-screen flex flex-col items-center justify-center text-center overflow-hidden"
     >      
       <section className='grid w-screen h-screen justify-center md:mt-10 items-center align-middle overflow-y-auto overflow-x-hidden'>
