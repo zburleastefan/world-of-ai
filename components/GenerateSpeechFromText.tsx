@@ -19,6 +19,16 @@ function GenerateSpeechFromText() {
         orderBy("createdAt","desc"),
     ));  
 
+    function speak(text: string) {
+        if(window['speechSynthesis'] === undefined) {
+            toast.error('SpeechSynthesis is undefined. Please try on another browser.');
+            return;
+        }
+        var synth = window.speechSynthesis;
+        var utterThis = new SpeechSynthesisUtterance(text);
+        synth.speak(utterThis);
+    }
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -35,17 +45,8 @@ function GenerateSpeechFromText() {
             setPrompt("");
             return;
         }
-
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.speak(
-              new SpeechSynthesisUtterance(userInput)
-            )
-        } else {
-            toast.success('SpeechSynthesis undefined...', { 
-                id: notification,});
-            return;  
-        }
-
+        
+        speak(userInput);
         setPrompt(""); 
         toast.success('Sending message to database.', { 
             id: notification,})  
