@@ -150,7 +150,7 @@ function Home() {
     return (
     <>
         <MainHeader/>
-        <div className="flex flex-col items-center place-items-center justify-start h-screen w-screen overflow-y-auto overflow-x-hidden p-3 text-white">
+        <div className="flex flex-col items-center bg-[#75b2ce] bg-no-repeat bg-center bg-cover place-items-center bg-[url('/abstract-technology-ai-computing.svg')] justify-start h-screen w-screen overflow-y-auto overflow-x-hidden p-3 text-white">
             <div className="overflow-hidden">
                 <Particles
                     id="tsparticles"
