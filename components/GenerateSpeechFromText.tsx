@@ -1,6 +1,6 @@
 'use client'
 import { toast } from 'react-hot-toast';
-import { FormEvent, SetStateAction, useState } from "react";
+import { FormEvent, useState } from "react";
 import SquigglyLines from './SquigglyLines';
 import { HomeModernIcon } from '@heroicons/react/24/solid';
 import { Tooltip } from 'react-tooltip';
