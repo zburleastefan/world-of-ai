@@ -23,7 +23,7 @@ interface UrlList {
 interface base64 {
     prompt: string,
     createdAt: admin.firestore.serverTimestamp,
-    base64Image: string,
+    base64: any,
     user: {
         _id: string,
         name: string,

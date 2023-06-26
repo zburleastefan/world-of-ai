@@ -1,6 +1,6 @@
 'use client'
 import { toast } from 'react-hot-toast';
-import { FormEvent, useState } from "react";
+import { FormEvent, SetStateAction, useState } from "react";
 import SquigglyLines from './SquigglyLines';
 import { HomeModernIcon } from '@heroicons/react/24/solid';
 import { Tooltip } from 'react-tooltip';
@@ -8,9 +8,8 @@ import Link from 'next/link';
 import { collection, orderBy, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
-import { rapidApiGenerateSpeech } from '../utils/rapidApiGenerateSpeech';
 
-
+declare const window: any;
 function GenerateSpeechFromText() {
     const [prompt, setPrompt] = useState("");
     const [textListCounter, setTextListCounter] = useState(false);
@@ -19,12 +18,24 @@ function GenerateSpeechFromText() {
     const [messages] = useCollection(auth && query(
         collection(db, "users", auth?.currentUser?.email!, "Text", auth?.currentUser?.uid!, 'textList'),
         orderBy("createdAt","desc"),
-        ));  
-        
-    const startAudio = (mp3: any) => {
-        let audio = new Audio(mp3);
-        // audio.load();
-        audio.play()
+    ));  
+
+    const handlePrompt = (promptMessage: string) => {
+        setPrompt(promptMessage);
+        playAudio(promptMessage);
+
+    }
+
+    const playAudio = (msg: string) => {
+        if ('speechSynthesis' in window) {
+            // Speech Synthesis is supported 🎉
+            toast.success('Speech Synthesis is supported 🎉');
+            let audioUtterance = new SpeechSynthesisUtterance(msg);
+            speechSynthesis.speak(audioUtterance);
+        } else {
+            toast.error('Speech Synthesis is not Supported 😞');
+            return;
+        }
     }
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -37,56 +48,33 @@ function GenerateSpeechFromText() {
         while (userInput[0] == ' ') {
             userInput = userInput.trim();
         }
-
+        
         if (!userInput || userInput ==' ') {
-            toast.error("You entered only white spaces. Please type in a valid message!");
-            setPrompt("");
-            return;
+            toast.error("You entered only white spaces. Please type in a valid message!", { 
+                id: notification,});
+                setPrompt("");
+                return;
         }
-
-        var mp3File = await rapidApiGenerateSpeech(userInput).then((response) => {
-            // console.log(JSON.stringify(response));
-
-             // response.value for fetch streams is a Uint8Array
-            // var blob = new Blob([response], { type: 'audio/mp3' });
-            // var url = window.URL.createObjectURL(blob);
-            // let audio = new Audio(url);
-            // audio.load();
-            // audio.play()
-
-            // window.audio = new Audio();
-            // window.audio.src = url;
-            // window.audio.play();
-            
-
-            var reader = response.body.getReader();
-            return reader
-            .read()
-            .then((result: any) => {
-                startAudio(result);
-              return result;
-            });
-        }).catch((error) => toast.error(error.message));
-        
-        // speak(userInput);
         setPrompt(""); 
-        toast.success('Sending message to database.', { 
-            id: notification,})  
-        
-        await fetch("/api/sendTextToDb", {
+            
+        playAudio(userInput);
+
+        await fetch("/api/sendBase64ToDb", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                prompt: userInput, 
+                prompt: userInput,
+                audio: '',
                 auth,
             }),     
-        }).then(async (response) => {
+        }).then(() => {
             toast.success('Success!', { 
                 id: notification,})
         }).catch((error) => {
-            toast.error(error);
+            toast.error(JSON.stringify(error), { 
+                id: notification,});
         })
     };
 
@@ -163,8 +151,8 @@ return (
                             <div className="justify-center m-2">
                                 {messages?.docs.map((message) => (
                                     <li key={message.id} className={`flex  p-1 justify-center items-center`}>
-                                        <button onClick={() => setPrompt(message.data().text)} className="text-yellow-500 border rounded-2xl px-1 text-center md:hover:scale-105 xl:scale-95 transition duration-700 border-t hover:shadow-md hover:shadow-amber-500/80">
-                                            {message.data().text}
+                                        <button onClick={() => handlePrompt(message.data().prompt)} className="text-yellow-500 border rounded-2xl px-1 text-center md:hover:scale-105 xl:scale-95 transition duration-700 border-t hover:shadow-md hover:shadow-amber-500/80">
+                                            {message.data().prompt}
                                         </button>
                                     </li>
                                 ))}
