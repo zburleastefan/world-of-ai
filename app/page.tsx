@@ -15,22 +15,35 @@ const myData = {
     {
         "id" : "0",
         "title" : "",
-        "size" : -1
+        "size" : 100
     },
     {
         "id" : "1",
         "title" : "Art Generator",
-        "size" : 100
+        "size" : 100,
+        "x" : -30, 
+        "y" : -40, 
     },
     {
         "id" : "2",
         "title" : "Speech Synthesizer",
-        "size" : 50
+        "size" : 80,
+        "x" : 10, 
+        "y" : 30, 
     },
     {
         "id" : "3",
         "title" : "Birds only!",
-        "size" : 80
+        "size" : 80,
+        "x" : 50, 
+        "y" : -40, 
+    },
+    {
+        "id" : "4",
+        "title" : "Generative AI",
+        "size" : 90,
+        "x" : 30, 
+        "y" : -100, 
     },
   ],
   "links": [
@@ -48,7 +61,47 @@ const myData = {
         "source": "0",
         "target": "3",
         "value": "Bird Images"
-    }
+    },
+    {
+        "source": "0",
+        "target": "4",
+        "value": "Generative AI"
+    },
+    {
+        "source": "1",
+        "target": "4",
+        "value": "Generative AI"
+    },
+    {
+        "source": "3",
+        "target": "4",
+        "value": "Generative AI"
+    },
+    {
+        "source": "2",
+        "target": "3",
+        "value": "Generative AI"
+    },
+    {
+        "source": "4",
+        "target": "3",
+        "value": "Generative AI"
+    },
+    {
+        "source": "1",
+        "target": "2",
+        "value": "Generative AI"
+    },
+    {
+        "source": "3",
+        "target": "2",
+        "value": "Generative AI"
+    },
+    {
+        "source": "2",
+        "target": "1",
+        "value": "Generative AI"
+    },
   ]
 }
 
@@ -78,8 +131,8 @@ function Home() {
             ctx.lineTo(xx, yy);
         }
         ctx.closePath();
-        // ctx.stroke();
-        ctx.fill();
+        ctx.stroke();
+        // ctx.fill();
         
         // Dotted hexagon draw
         const gradient = createGradient(ctx);
@@ -94,6 +147,20 @@ function Home() {
         //  ctx.arc(x, y, 40, 0, Math.PI * 2);
          ctx.closePath();
          ctx.stroke();
+        
+         // inner hexagon
+         radius = 20;
+         ctx.beginPath();
+         for (let i = 0; i < shapeType; i++) {
+            let xx = x + radius * Math.cos(angle * i);
+            let yy = y + radius * Math.sin(angle * i);
+            ctx.lineTo(xx, yy);
+        }
+        //  ctx.arc(x, y, 40, 0, Math.PI * 2);
+         ctx.closePath();
+         ctx.stroke();
+         ctx.fillStyle = "black";
+         ctx.fill();
     }
 
     function createRainbowEffect(ctx: any) {
@@ -233,7 +300,7 @@ function Home() {
                     nodeId="id"
                     nodeLabel={"title"}
                     graphData={myData} 
-                    linkVisibility={false}
+                    // linkVisibility={false}
                     onNodeClick={(node, event) => {
                         if (node.id == 1) {
                             router.push('/generateimage')
@@ -244,13 +311,16 @@ function Home() {
                         if (node.id == 3) {
                             router.push('/generatebirdimage')
                         }
+                        if (node.id == 4) {
+                            router.push('/generativeai')
+                        }
                     }}
                     nodeCanvasObject={(node, ctx, globalScale) => {
                         const label = node['title'] as string;
                         const fontSize = 14 / globalScale;
                         ctx.font = `Bold  ${fontSize}px Arial`;
                         
-                        if (node.id == 1 || node.id == 2 || node.id == 3) {
+                        if (node.id == 1 || node.id == 2 || node.id == 3 || node.id == 4) {
                             if (node.id == 1) {
                                 drawStar(node?.x!, node?.y!, 5, 30, 15, ctx);
                                 ctx.setLineDash([5, 5]);
@@ -262,12 +332,27 @@ function Home() {
                                 ctx.stroke();
                             } else if (node.id == 3) {
                                 drawHexagon(node?.x!, node?.y!, ctx);
+                            } else if (node.id == 4) {
+                                ctx.beginPath();
+                                ctx.arc(node?.x!, node?.y!, 30, 0, Math.PI * 2, true);
+                                ctx.moveTo(node?.x! + 10, node?.y! );
+                                ctx.arc(node?.x!, node?.y!, 20, 0, Math.PI*2, false);
+                                ctx.arc(node?.x!, node?.y!, 30, 0, Math.PI, false); 
+                                ctx.strokeStyle='black';
+                                ctx.stroke();
+                                ctx.fillStyle = "aquamarine";
+                                ctx.fill();
+
                             } else {
                                 const gradient = createGradient(ctx);
                                 // Fill with gradient
                                 ctx.fillStyle = gradient;
                                 ctx.beginPath();
-                                ctx.arc(node?.x!, node?.y!, 30, 0, 2 * Math.PI);
+                                ctx.arc(node?.x!, node?.y!, 25, 0, 2 * Math.PI);
+                                ctx.stroke();
+                                ctx.beginPath();
+                                ctx.arc(node?.x!, node?.y!, 16, 0, 2 * Math.PI);
+                                ctx.stroke();
                                 ctx.fill();
                                 
                                 // Draw ellipse
@@ -286,13 +371,13 @@ function Home() {
               
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
-                        ctx.fillStyle = 'black';
+                        ctx.fillStyle = 'white';
                         ctx.fillText(label, node?.x!, node?.y!);
                     }}
                     nodeVal={"size"}
                     d3AlphaDecay={0}
-                    nodeRelSize={3}
-                    d3AlphaMin={0}
+                    // nodeRelSize={3}
+                    d3AlphaMin={10}
                 />
             </div>
             <h3 className="text-white justify-between items-center text-center p-3 opacity-80">{welcomeText} <span className="font-semibold hover:underline hover:text-[#11A37F] hover:opacity-100">{authContext?.currentUser?.displayName || authContext?.currentUser?.email}</span>!</h3>

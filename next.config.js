@@ -10,7 +10,8 @@ module.exports = {
       'world-of-ai-zburleastefan.vercel.app',
       'localhost',
       'firebasestorage.googleapis.com',
-      'image.lexica.art'
+      'image.lexica.art',
+      'replicate.delivery'
     ],
   },
   experimental: {
