@@ -53,32 +53,34 @@ const GenerateBirdImageComponent: NextPage= () => {
         }
         setPrompt('');
 
-        await rapidApiGenerateBirdAiImg(userInput).then((response) => {
+        await rapidApiGenerateBirdAiImg(userInput).then(async (response) => {
           base64String = response.result;
-          if (response.error) {
-            toast.error(response.error.message, { 
+          if (response.error || JSON.stringify(response).includes('error')) {
+            toast.error(response.error.error_type + " : " + response.error.message, { 
               id: notification,});
+            console.log(JSON.stringify(response) + " = from frontend")
           }
+          toast.loading('Sending image to database...', { 
+            id: notification,});
+  
+          await fetch("/api/sendBirdImgsToDb", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                prompt: userInput, 
+                auth: auth,
+                base64Image: response.result
+            }),     
+          }).then(async (response) => {
+            toast.success('Success!', { 
+                id: notification,});
+          }).catch(error => toast.error( error, { 
+            id: notification}));
+
         }).catch((error) => toast.error(error, {id: notification}));
           
-        toast.loading('Sending image to database...', { 
-          id: notification,});
-
-        await fetch("/api/sendBase64ToDb", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-              prompt: userInput, 
-              auth: auth,
-              base64Image: base64String
-          }),     
-        }).then(async (response) => {
-          toast.success('Success!', { 
-              id: notification,});
-        }).catch(error => toast.error( error, { 
-          id: notification}));
     };
     
     return (
@@ -161,7 +163,7 @@ const GenerateBirdImageComponent: NextPage= () => {
                                           <figure className={`relative flex flex-col items-center justify-start text-center hover:scale-95 transition duration-1000 ease-in-out rounded-2xl p-6 shadow-xl shadow-slate-900/10 border `}>
                                               <figcaption className="relative border-slate-100/50 space-y-1 hover:scale-110 ease-in-out duration-700">
                                                 <Image 
-                                                  src={`data:image/jpeg;base64,${item.data().base64Image}`}
+                                                  src={`data:image/jpeg;base64,${item.data().base64Image ? item.data().base64Image : item.data().birdImage }`}
                                                   alt='photo' 
                                                   width={500} height={500} 
                                                   className='h-auto w-52 rounded-2xl bg-white bg-blend-saturation object-contain'

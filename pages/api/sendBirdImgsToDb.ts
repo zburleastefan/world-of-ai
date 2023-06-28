@@ -6,15 +6,13 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data>
   ) {
-    const {prompt, auth, audio} = req.body;
+    const {prompt, auth, base64Image} = req.body;
 
-   if (!req.body.prompt) return res.status(400).json({answer: 'No prompt!'});
-
-//    console.log(JSON.stringify(audio) + " = from api call")
-    const base64Response: base64 = {
+//    console.log(JSON.stringify(base64Image) + " = from api call")
+    const birdImgsToDb: sendBirdImgs = {
         prompt: prompt,
         createdAt: admin.firestore.Timestamp.now(),
-        base64: audio,
+        birdImage: base64Image,
         user: {
             _id: auth?.currentUser?.uid!,
             name: auth?.currentUser?.displayName! || auth?.currentUser?.email!,
@@ -26,10 +24,12 @@ export default async function handler(
     const dbResponse = await adminDb
     .collection("users")
     .doc(auth?.currentUser?.email!)
-    .collection("Text")
+    .collection("Images")
     .doc(auth?.currentUser?.uid!)
-    .collection("textList")
-    .add(base64Response);
+    .collection("birdImageList")
+    .add(birdImgsToDb);
 
-    res.status(200).json({ answer: "Success!" })
+    // console.log(JSON.stringify(dbResponse))
+
+    res.status(200).json({ answer: JSON.stringify(dbResponse) })
 }

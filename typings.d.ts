@@ -20,10 +20,10 @@ interface UrlList {
     },
 }
 
-interface base64 {
+interface sendBirdImgs {
     prompt: string,
     createdAt: admin.firestore.serverTimestamp,
-    base64: any,
+    birdImage: any,
     user: {
         _id: string,
         name: string,
