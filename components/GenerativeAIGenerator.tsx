@@ -21,7 +21,6 @@ const GenerativeAIGenerator: NextPage= () => {
     const [error, setError] = useState(null);
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-
     const [imageUrls] = useCollection(auth && query(
         collection(db, "users", auth?.currentUser?.email!, "Images", auth?.currentUser?.uid!, "generatedImageList"),
         orderBy("createdAt","desc"),
@@ -181,7 +180,7 @@ const GenerativeAIGenerator: NextPage= () => {
                                         </div>
                                     )}
                                 
-                                    {error && <div>{error}</div>}
+                                    {error && <div className="text-yellow-400 font-medium">{error}</div>}
 
                                     {prediction && (
                                         <div className="flex flex-col justify-center items-center">
