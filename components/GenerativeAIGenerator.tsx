@@ -2,14 +2,13 @@
 import { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import SquigglyLines from './SquigglyLines';
-import { HomeModernIcon, PhotoIcon } from '@heroicons/react/24/solid';
+import { HomeModernIcon } from '@heroicons/react/24/solid';
 import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
 import { auth, db } from "../firebase/firebaseConfig";
 import Image from "next/image";
 import { NextPage } from "next";
 import React from "react";
-import { rapidApiAiImgGenerator } from "../utils/rapidApiOpenAiImg";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { collection, orderBy, query } from "@firebase/firestore";
 
@@ -49,8 +48,6 @@ const GenerativeAIGenerator: NextPage= () => {
         while (userInput[0] == ' ') {
             userInput = userInput.trim();
         }
-        userInput = userInput.replace(/\?/g,'');
-        userInput = userInput.replace(/\!/g,'');
         
         if (!userInput || userInput ==' ') {
             toast.error("You entered only white spaces. Please type in a valid message!");
@@ -74,7 +71,6 @@ const GenerativeAIGenerator: NextPage= () => {
         return;
         }
         setPrediction(prediction);
-    
         
         while (
         prediction.status !== "succeeded" &&
@@ -90,11 +86,12 @@ const GenerativeAIGenerator: NextPage= () => {
             console.log({prediction})
             setPrediction(prediction);
         }
-        
-        for (let i = 0; i < prediction?.output?.length!; ++i) {
-            urlObjList.push({'urls': prediction.output[i]});
-        }
 
+        urlObjList.push({'urls': prediction.output[0]});
+        
+        toast.loading('Sending images to database...', { 
+            id: notification,});
+        
         await fetch("/api/sendGeneratedImgsToDb", {
             method: "POST",
             headers: {
@@ -106,8 +103,6 @@ const GenerativeAIGenerator: NextPage= () => {
                 obj: urlObjList
             }),     
         }).then(async (response) => {
-            toast.loading('Sending images to database...', { 
-                id: notification,});
             toast.success('Success!', { 
                 id: notification,})
         }).catch(error => toast.error(error));
